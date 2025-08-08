@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2nt8c5hbggop"]
+
+[ext_resource type="Script" uid="uid://d137jdxv47y85" path="res://Character/Character.cs" id="1_ptld2"]
+[ext_resource type="PackedScene" uid="uid://t6pasqukvt0v" path="res://Character/AnimationLibrary_Godot_Standard.glb" id="2_vbi5m"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_aetg1"]
+radius = 0.26
+height = 1.8
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_ptld2")
+
+[node name="Mesh" parent="." instance=ExtResource("2_vbi5m")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_aetg1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

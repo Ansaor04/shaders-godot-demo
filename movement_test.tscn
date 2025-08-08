@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://dcoowgigmx732"]
+
+[ext_resource type="PackedScene" uid="uid://c2nt8c5hbggop" path="res://Character/Character.tscn" id="1_58akw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o3jxj"]
+size = Vector3(30, 1, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0f027"]
+size = Vector3(30, 1, 30)
+
+[node name="Root" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_o3jxj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("BoxMesh_0f027")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_58akw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.03174, 1.32135, -1.03452)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.87165, -2.35611)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/SpringArm3D"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0560481, 0.998428, 0, -0.998428, 0.0560481, 0, 3.27446, 0)
