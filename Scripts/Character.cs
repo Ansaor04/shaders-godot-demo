@@ -1,7 +1,6 @@
 using Godot;
 using System;
 
-
 public partial class Character : CharacterBody3D
 {
 
@@ -14,9 +13,6 @@ public partial class Character : CharacterBody3D
 	[Export] public float WalkSpeed = 1.5f;
 	[Export] public float RunSpeed = 6.0f;
 	[Export] public float JumpVelocity = 4.5f;
-	[Export] public float Acceleration = 20.0f;
-	[Export] public float Friction = 20.0f;
-	[Export] public float AirControl = 0.3f;
 	[Export] public float RotationSpeed = 10.0f;
 	[Export] public float GroundAcceleration = 10.0f;
 	[Export] public float GroundDeceleration = 15.0f;
@@ -32,9 +28,8 @@ public partial class Character : CharacterBody3D
 	private SpringArm3D _springArm;
 	private AnimationPlayer _animationPlayer;
 	private Node3D _mesh;
-
-
 	private bool _isRunning = false;
+	private bool _isJumping = false;
 
 	public override void _Ready()
 	{
@@ -48,11 +43,7 @@ public partial class Character : CharacterBody3D
 	{
 		Vector3 velocity = Velocity;
 
-		// Add the gravity.
-		if (!IsOnFloor())
-		{
-			velocity += GetGravity() * (float)delta;
-		}
+		HandleGravity(ref velocity, delta);
 
 		HandleMovement(ref velocity, delta);
 
@@ -84,8 +75,8 @@ public partial class Character : CharacterBody3D
 
 	private void ToggleMouseCapture()
 	{
-		Input.MouseMode = Input.MouseMode == Input.MouseModeEnum.Captured 
-			? Input.MouseModeEnum.Visible 
+		Input.MouseMode = Input.MouseMode == Input.MouseModeEnum.Captured
+			? Input.MouseModeEnum.Visible
 			: Input.MouseModeEnum.Captured;
 	}
 
@@ -104,6 +95,8 @@ public partial class Character : CharacterBody3D
 		if (Input.IsActionJustPressed("jump") && IsOnFloor())
 		{
 			velocity.Y = JumpVelocity;
+			_isJumping = true;
+			RequestAnimation("Jump_Start");
 		}
 	}
 
@@ -123,12 +116,15 @@ public partial class Character : CharacterBody3D
 		{
 			Vector3 targetVelocity = movementDirection * targetSpeed;
 			Vector3 acceleratedVelocity = AccelerateTowards(currentHorizontalVelocity, targetVelocity, delta);
-			
+
 			velocity.X = acceleratedVelocity.X;
 			velocity.Z = acceleratedVelocity.Z;
 
 			RotateCharacterToMovement(movementDirection, delta);
-			RequestAnimation(_isRunning ? "Sprint" : "Walk");
+			if (!_isJumping)
+			{
+				RequestAnimation(_isRunning ? "Sprint" : "Walk");
+			}
 		}
 		else
 		{
@@ -136,27 +132,40 @@ public partial class Character : CharacterBody3D
 			velocity.X = deceleratedVelocity.X;
 			velocity.Z = deceleratedVelocity.Z;
 
-			RequestAnimation("Idle");
+			if (!_isJumping)
+			{
+				RequestAnimation("Idle");
+			}
+		}
+	}
+
+	private void HandleGravity(ref Vector3 velocity, double delta)
+	{
+		_isJumping = !IsOnFloor();
+		if (_isJumping)
+		{
+			velocity += GetGravity() * (float)delta;
+			RequestAnimation("Jump");
 		}
 	}
 
 	private Vector3 AccelerateTowards(Vector3 currentVelocity, Vector3 targetVelocity, double delta)
 	{
 		float acceleration = IsOnFloor() ? GroundAcceleration : AirAcceleration;
-		
+
 		if (_isRunning && IsOnFloor())
 		{
 			acceleration *= SprintAccelerationBoost;
 		}
-		
+
 		Vector3 velocityDifference = targetVelocity - currentVelocity;
 		float accelerationStep = acceleration * (float)delta;
-		
+
 		if (velocityDifference.Length() <= accelerationStep)
 		{
 			return targetVelocity;
 		}
-		
+
 		return currentVelocity + velocityDifference.Normalized() * accelerationStep;
 	}
 
@@ -166,15 +175,15 @@ public partial class Character : CharacterBody3D
 		{
 			return Vector3.Zero;
 		}
-		
+
 		float deceleration = IsOnFloor() ? GroundDeceleration : AirDeceleration;
 		float decelerationStep = deceleration * (float)delta;
-		
+
 		if (currentVelocity.Length() <= decelerationStep)
 		{
 			return Vector3.Zero;
 		}
-		
+
 		return currentVelocity - currentVelocity.Normalized() * decelerationStep;
 	}
 
@@ -187,9 +196,9 @@ public partial class Character : CharacterBody3D
 	private void RotateCharacterToMovement(Vector3 movementDirection, double delta)
 	{
 		if (movementDirection.Length() < 0.1f) return;
-		
+
 		float targetYaw = Mathf.Atan2(movementDirection.X, movementDirection.Z);
-		
+
 		Vector3 currentRotation = _mesh.GlobalRotation;
 		currentRotation.Y = Mathf.LerpAngle(currentRotation.Y, targetYaw, RotationSpeed * (float)delta);
 		_mesh.GlobalRotation = currentRotation;
@@ -213,7 +222,7 @@ public partial class Character : CharacterBody3D
 
 	private void RequestAnimation(string animationName)
 	{
-		if(_animationPlayer.CurrentAnimation != animationName) 
+		if (_animationPlayer.CurrentAnimation != animationName)
 		{
 			_animationPlayer.Play(animationName);
 		}
