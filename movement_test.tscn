@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dcoowgigmx732"]
+[gd_scene load_steps=17 format=3 uid="uid://dcoowgigmx732"]
 
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://Textures/grids/Dark/texture_05.png" id="1_e51mn"]
 [ext_resource type="Texture2D" uid="uid://bs8atlepclylh" path="res://Textures/grids/Green/texture_02.png" id="3_snpff"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bs7j14b3y15pr" path="res://Interactable/TPDoor/TPDoor.tscn" id="6_n2kti"]
 [ext_resource type="PackedScene" uid="uid://bnumi2aawvst4" path="res://Interactable/PlayerStart.tscn" id="7_u62bo"]
 [ext_resource type="PackedScene" uid="uid://dfcun0utlh5q1" path="res://tp_test.tscn" id="7_unidx"]
+[ext_resource type="PackedScene" uid="uid://8e0sqcsea3jq" path="res://Interactable/Button/button.tscn" id="8_u62bo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o3jxj"]
 size = Vector3(30, 1, 30)
@@ -84,3 +85,6 @@ targetScene = ExtResource("7_unidx")
 
 [node name="PlayerStart" parent="." instance=ExtResource("7_u62bo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.783161, -0.46984, -0.458721)
+
+[node name="Button" parent="." instance=ExtResource("8_u62bo")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -2.29611, -0.382164, -1.55279)

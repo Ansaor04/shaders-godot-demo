@@ -1,0 +1,125 @@
+[gd_scene load_steps=12 format=3 uid="uid://8e0sqcsea3jq"]
+
+[ext_resource type="Script" uid="uid://djtf1jsacm1kj" path="res://Scripts/Button.cs" id="1_n7m1u"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6stmu"]
+metallic = 1.0
+metallic_specular = 0.52
+roughness = 0.54
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8o0ox"]
+material = SubResource("StandardMaterial3D_6stmu")
+top_radius = 0.325
+height = 0.295
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_470bm"]
+height = 0.288301
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_la4e6"]
+albedo_color = Color(0.992157, 0.0823529, 0.14902, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uv6wo"]
+material = SubResource("StandardMaterial3D_la4e6")
+radius = 0.245
+height = 0.62
+
+[sub_resource type="Animation" id="Animation_0ie02"]
+resource_name = "Press"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.121806, 0), Vector3(0, 0.0404624, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D2:mesh:material:albedo_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.992157, 0.0823529, 0.14902, 1), Color(0, 0.643137, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_kkiq1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.121806, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D2:mesh:material:albedo_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.992157, 0.0823529, 0.14902, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tlgru"]
+_data = {
+&"Press": SubResource("Animation_0ie02"),
+&"RESET": SubResource("Animation_kkiq1")
+}
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_y5exc"]
+radius = 0.342
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_n7m1u"]
+height = 0.11554
+radius = 0.564453
+
+[node name="Button" type="Node3D"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+script = ExtResource("1_n7m1u")
+
+[node name="Base" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Base"]
+mesh = SubResource("CylinderMesh_8o0ox")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Base"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0108496, 0)
+shape = SubResource("CylinderShape3D_470bm")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.121806, 0)
+mesh = SubResource("CapsuleMesh_uv6wo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_tlgru")
+}
+
+[node name="TriggerArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219437, 0)
+shape = SubResource("SphereShape3D_y5exc")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TriggerArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.298554, 0)
+shape = SubResource("CylinderShape3D_n7m1u")
