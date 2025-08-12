@@ -40,14 +40,14 @@ public partial class Button : Node3D
 		}
 	}
 
-    private void OnPress()
-    {
-        if (isActive) return;
+	private void OnPress()
+	{
+		if (isActive) return;
 
-        timer = buttonCoolDown;
-        animationPlayer.Play("Press");
-        ButtonCallbackTimer = OnButtonCallback;
-        isActive = true;
+		timer = buttonCoolDown;
+		animationPlayer.Play("Press");
+		ButtonCallbackTimer = OnButtonCallback;
+		isActive = true;
 	}
 
 	private void OnButtonCallback(double delta)

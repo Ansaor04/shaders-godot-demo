@@ -87,4 +87,4 @@ targetScene = ExtResource("7_unidx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.783161, -0.46984, -0.458721)
 
 [node name="Button" parent="." instance=ExtResource("8_u62bo")]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -2.29611, -0.382164, -1.55279)
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -2.29611, -0.380132, -1.55279)
