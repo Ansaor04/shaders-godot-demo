@@ -4,10 +4,9 @@ using System;
 public partial class Button : Node3D
 {
 	[Export]
-	public string signalName;
-
-	[Export]
 	public float buttonCoolDown = 2.0f;
+
+	public Action OnPressedAction;
 
 	private AnimationPlayer animationPlayer;
 	private Area3D triggerArea;
@@ -32,7 +31,7 @@ public partial class Button : Node3D
 		}
 	}
 
-	public void OnPlayerEnter(Node body)
+	private void OnPlayerEnter(Node body)
 	{
 		if (body is Character)
 		{
@@ -48,6 +47,8 @@ public partial class Button : Node3D
 		animationPlayer.Play("Press");
 		ButtonCallbackTimer = OnButtonCallback;
 		isActive = true;
+
+		OnPressedAction?.Invoke();
 	}
 
 	private void OnButtonCallback(double delta)

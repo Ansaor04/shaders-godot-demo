@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://dcoowgigmx732"]
+[gd_scene load_steps=18 format=3 uid="uid://dcoowgigmx732"]
 
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://Textures/grids/Dark/texture_05.png" id="1_e51mn"]
 [ext_resource type="Texture2D" uid="uid://bs8atlepclylh" path="res://Textures/grids/Green/texture_02.png" id="3_snpff"]
+[ext_resource type="Script" uid="uid://b6geg57wj61s6" path="res://Scripts/Test/Box3.cs" id="4_dsagd"]
 [ext_resource type="Texture2D" uid="uid://d2pabwwu1pndq" path="res://Textures/grids/Light/texture_01.png" id="4_f07rf"]
 [ext_resource type="Texture2D" uid="uid://d2m8qf54p78pp" path="res://Textures/grids/Orange/texture_03.png" id="5_n2kti"]
 [ext_resource type="PackedScene" uid="uid://bs7j14b3y15pr" path="res://Interactable/TPDoor/TPDoor.tscn" id="6_n2kti"]
@@ -71,6 +72,7 @@ mesh = SubResource("BoxMesh_n2kti")
 
 [node name="Box3" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.77183, 0.033691, -2.99689)
+script = ExtResource("4_dsagd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box3"]
 shape = SubResource("BoxShape3D_httow")
