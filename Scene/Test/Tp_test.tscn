@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://bs8atlepclylh" path="res://Textures/grids/Green/texture_02.png" id="3_k0sru"]
 [ext_resource type="Texture2D" uid="uid://d2pabwwu1pndq" path="res://Textures/grids/Light/texture_01.png" id="4_03tuo"]
 [ext_resource type="Texture2D" uid="uid://d2m8qf54p78pp" path="res://Textures/grids/Orange/texture_03.png" id="5_uu6b7"]
-[ext_resource type="PackedScene" uid="uid://bs7j14b3y15pr" path="res://Interactable/TPDoor/TPDoor.tscn" id="6_3jdwa"]
-[ext_resource type="PackedScene" uid="uid://bnumi2aawvst4" path="res://Interactable/PlayerStart.tscn" id="6_gqkph"]
+[ext_resource type="PackedScene" uid="uid://bs7j14b3y15pr" path="res://Prefabs/Interactable/TPDoor/TPDoor.tscn" id="6_3jdwa"]
+[ext_resource type="PackedScene" uid="uid://bnumi2aawvst4" path="res://Prefabs/Interactable/PlayerStart.tscn" id="6_gqkph"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o3jxj"]
 size = Vector3(30, 1, 30)

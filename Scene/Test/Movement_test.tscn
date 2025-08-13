@@ -1,20 +1,20 @@
 [gd_scene load_steps=18 format=3 uid="uid://dcoowgigmx732"]
 
-[ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://Textures/grids/Dark/texture_05.png" id="1_e51mn"]
-[ext_resource type="Texture2D" uid="uid://bs8atlepclylh" path="res://Textures/grids/Green/texture_02.png" id="3_snpff"]
-[ext_resource type="Script" uid="uid://b6geg57wj61s6" path="res://Scripts/Test/Box3.cs" id="4_dsagd"]
-[ext_resource type="Texture2D" uid="uid://d2pabwwu1pndq" path="res://Textures/grids/Light/texture_01.png" id="4_f07rf"]
-[ext_resource type="Texture2D" uid="uid://d2m8qf54p78pp" path="res://Textures/grids/Orange/texture_03.png" id="5_n2kti"]
-[ext_resource type="PackedScene" uid="uid://bs7j14b3y15pr" path="res://Interactable/TPDoor/TPDoor.tscn" id="6_n2kti"]
-[ext_resource type="PackedScene" uid="uid://bnumi2aawvst4" path="res://Interactable/PlayerStart.tscn" id="7_u62bo"]
-[ext_resource type="PackedScene" uid="uid://dfcun0utlh5q1" path="res://tp_test.tscn" id="7_unidx"]
-[ext_resource type="PackedScene" uid="uid://8e0sqcsea3jq" path="res://Interactable/Button/button.tscn" id="8_u62bo"]
+[ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://Textures/grids/Dark/texture_05.png" id="1_fjd2d"]
+[ext_resource type="Texture2D" uid="uid://bs8atlepclylh" path="res://Textures/grids/Green/texture_02.png" id="2_ttqkg"]
+[ext_resource type="Texture2D" uid="uid://d2pabwwu1pndq" path="res://Textures/grids/Light/texture_01.png" id="3_6fqvy"]
+[ext_resource type="Script" uid="uid://b6geg57wj61s6" path="res://Scripts/Test/Box3.cs" id="4_lc1g0"]
+[ext_resource type="Texture2D" uid="uid://d2m8qf54p78pp" path="res://Textures/grids/Orange/texture_03.png" id="5_cm1ig"]
+[ext_resource type="PackedScene" uid="uid://bs7j14b3y15pr" path="res://Prefabs/Interactable/TPDoor/TPDoor.tscn" id="6_ou0rb"]
+[ext_resource type="PackedScene" uid="uid://dfcun0utlh5q1" path="res://Scene/Test/Tp_test.tscn" id="7_dfsn1"]
+[ext_resource type="PackedScene" uid="uid://bnumi2aawvst4" path="res://Prefabs/Interactable/PlayerStart.tscn" id="8_dhfxb"]
+[ext_resource type="PackedScene" uid="uid://8e0sqcsea3jq" path="res://Prefabs/Interactable/Button/Button.tscn" id="9_jtu6l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o3jxj"]
 size = Vector3(30, 1, 30)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_snpff"]
-albedo_texture = ExtResource("1_e51mn")
+albedo_texture = ExtResource("1_fjd2d")
 uv1_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_0f027"]
@@ -23,16 +23,16 @@ size = Vector3(30, 1, 30)
 [sub_resource type="BoxShape3D" id="BoxShape3D_httow"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f07rf"]
-albedo_texture = ExtResource("3_snpff")
+albedo_texture = ExtResource("2_ttqkg")
 uv1_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_n2kti"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_unidx"]
-albedo_texture = ExtResource("4_f07rf")
+albedo_texture = ExtResource("3_6fqvy")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u62bo"]
-albedo_texture = ExtResource("5_n2kti")
+albedo_texture = ExtResource("5_cm1ig")
 
 [node name="Root" type="Node3D"]
 
@@ -72,7 +72,7 @@ mesh = SubResource("BoxMesh_n2kti")
 
 [node name="Box3" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.77183, 0.033691, -2.99689)
-script = ExtResource("4_dsagd")
+script = ExtResource("4_lc1g0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box3"]
 shape = SubResource("BoxShape3D_httow")
@@ -81,12 +81,12 @@ shape = SubResource("BoxShape3D_httow")
 material_override = SubResource("StandardMaterial3D_u62bo")
 mesh = SubResource("BoxMesh_n2kti")
 
-[node name="Door" parent="." instance=ExtResource("6_n2kti")]
+[node name="Door" parent="." instance=ExtResource("6_ou0rb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.410975, -0.50818, -3.36017)
-targetScene = ExtResource("7_unidx")
+targetScene = ExtResource("7_dfsn1")
 
-[node name="PlayerStart" parent="." instance=ExtResource("7_u62bo")]
+[node name="PlayerStart" parent="." instance=ExtResource("8_dhfxb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.783161, -0.46984, -0.458721)
 
-[node name="Button" parent="." instance=ExtResource("8_u62bo")]
+[node name="Button" parent="." instance=ExtResource("9_jtu6l")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -2.29611, -0.380132, -1.55279)

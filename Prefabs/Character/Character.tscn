@@ -1,6 +1,6 @@
 [gd_scene load_steps=54 format=4 uid="uid://c2nt8c5hbggop"]
 
-[ext_resource type="Script" uid="uid://s6dq0r71tudm" path="res://Scripts/Character.cs" id="1_ptld2"]
+[ext_resource type="Script" uid="uid://s6dq0r71tudm" path="res://Scripts/Character.cs" id="1_ptlfg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_psw7k"]
 resource_name = "M_Main"
@@ -17534,7 +17534,7 @@ radius = 0.21
 height = 1.8
 
 [node name="Player" type="CharacterBody3D"]
-script = ExtResource("1_ptld2")
+script = ExtResource("1_ptlfg")
 
 [node name="Mesh" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
