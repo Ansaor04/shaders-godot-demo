@@ -1,61 +1,55 @@
-[gd_scene load_steps=12 format=3 uid="uid://uwpjsv7dasg2"]
+[gd_scene load_steps=11 format=3 uid="uid://uwpjsv7dasg2"]
 
-[ext_resource type="Shader" uid="uid://brue6lfql22nf" path="res://Shaders/Water/WaterWaves.gdshader" id="1_b0vno"]
+[ext_resource type="Shader" uid="uid://d0e8gff3pnc0q" path="res://Shaders/Water/Ocean.gdshader" id="1_oxv5j"]
+[ext_resource type="PackedScene" uid="uid://c2nt8c5hbggop" path="res://Character/Character.tscn" id="2_oxv5j"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_es0mo"]
+noise_type = 0
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hcdmf"]
+noise = SubResource("FastNoiseLite_es0mo")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_oxv5j"]
 noise_type = 3
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_es0mo"]
-noise = SubResource("FastNoiseLite_oxv5j")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_hcdmf"]
-noise_type = 3
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a0vuo"]
-noise = SubResource("FastNoiseLite_hcdmf")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_e5guv"]
-noise_type = 3
 fractal_type = 2
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l84h3"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_es0mo"]
 seamless = true
 as_normal_map = true
-noise = SubResource("FastNoiseLite_e5guv")
+noise = SubResource("FastNoiseLite_oxv5j")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oxv5j"]
 render_priority = 0
-shader = ExtResource("1_b0vno")
-shader_parameter/speed = 0.0
-shader_parameter/noise1 = SubResource("NoiseTexture2D_es0mo")
-shader_parameter/noise2 = SubResource("NoiseTexture2D_a0vuo")
-shader_parameter/normalmap = SubResource("NoiseTexture2D_l84h3")
-shader_parameter/color = Color(0, 0.65098, 0.835294, 1)
-shader_parameter/edge_color = Color(0.70562, 0.893236, 0.987748, 1)
-shader_parameter/edge_scale = 0.25
-shader_parameter/near = 0.1
-shader_parameter/far = 100.0
-shader_parameter/wave_strengh = Vector2(0.5, 0.25)
-shader_parameter/wave_frequency = Vector2(12, 12)
-shader_parameter/time_factor = Vector2(1, 2)
+shader = ExtResource("1_oxv5j")
+shader_parameter/water_color = Color(0.279353, 0.50121, 0.723652, 1)
+shader_parameter/uv_scale = 4.1
+shader_parameter/time_scale = 2.0
+shader_parameter/water_normal_noise = SubResource("NoiseTexture2D_es0mo")
+shader_parameter/sun_highlights_time = 0.1
+shader_parameter/sun_highlights = SubResource("NoiseTexture2D_hcdmf")
+shader_parameter/color_ratio = 0.1
+shader_parameter/abberation_r = Vector2(0.19, 0)
+shader_parameter/abberation_g = Vector2(0, 0.002)
+shader_parameter/abberation_b = Vector2(-0.19, 0)
+shader_parameter/depth_distance = 2.6
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_b0vno"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oxv5j"]
 size = Vector3(55.3277, 1, 61.5286)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_es0mo"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_oxv5j"]
 
 [node name="WaterLand" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(25.4493, 0, 0, 0, 1.35785, 0, 0, 0, 47.54, -2.83771, 0.947764, 4.48382)
+transform = Transform3D(25.4493, 0, 0, 0, 1.35785, 0, 0, 0, 47.54, -0.608963, 0.947764, 4.48382)
 material_override = SubResource("ShaderMaterial_oxv5j")
 mesh = SubResource("PlaneMesh_b0vno")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.797771, -0.569909, 0.19689, 0.125697, 0.476556, 0.870112, -0.589714, -0.669401, 0.451818, 0, 6.77442, 0)
-light_color = Color(0.462394, 0.647805, 0.951233, 1)
 
 [node name="Floor" type="StaticBody3D" parent="."]
 
@@ -63,7 +57,9 @@ light_color = Color(0.462394, 0.647805, 0.951233, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.183649, 0, 0.801664)
 shape = SubResource("BoxShape3D_oxv5j")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-transform = Transform3D(29.4518, 0, 0, 0, 1.47713, 0, 0, 0, 32.145, 0, 0, 0)
-mesh = SubResource("PlaneMesh_es0mo")
-skeleton = NodePath("../CollisionShape3D")
+[node name="Player" parent="." instance=ExtResource("2_oxv5j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.413519, 0)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.89302, -0.0383755, 0)
+mesh = SubResource("CylinderMesh_oxv5j")
