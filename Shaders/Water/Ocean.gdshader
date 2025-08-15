@@ -2,19 +2,17 @@ shader_type spatial;
 
 global uniform vec3 ocean_pPosition; 
 
-uniform vec3 water_color : source_color;
 uniform float uv_scale : hint_range(0.0, 10.0, 0.1) = 1.0;
 uniform float time_scale : hint_range(0.0, 10.0, 0.1) = 10.0;
 uniform sampler2D water_normal_noise;
-uniform float sun_highlights_time : hint_range(0.0, 10.0, 0.1) = 10.0;
-uniform sampler2D sun_highlights;
 
 uniform sampler2D screen_texture : hint_screen_texture, repeat_disable;
 
 //depth values
 uniform sampler2D depth_texture : hint_depth_texture;
+uniform vec3 color_deep : source_color = vec3(0.11,0.29,0.33); // Deep depth color
+uniform vec3 color_shallow : source_color = vec3(0.0,0.47,0.76); // Shallow depth color
 uniform float depth_distance : hint_range(0.0, 10.0, 0.1) = 0.5;
-uniform float beers_law : hint_range(0.0, 1.0, 0.1) = 12.0;
 uniform float water_transparency : hint_range(0.0, 1.0, 0.1) = 0.0;
 
 //refraction values
@@ -24,14 +22,6 @@ varying vec3 world_position;
 varying float vertex_distance;
 varying float vertex_distance_clamped;
 
-
-
-vec3 soft_light(vec3 base, vec3 blend)
-{
-	vec3 limit = step(0.5, blend);
-	return mix(2.0 * base * blend + base * base *(1.0 - 2.0 * blend),
-		sqrt(base) * (2.0 * blend - 1.0) + (2.0 * base) * (1.0 - blend), limit);
-}
 
 void vertex()
 {
@@ -63,12 +53,31 @@ void fragment() {
 	float depth_clean = textureLod(depth_texture,SCREEN_UV, 0.0).r;
 	float depth = texture(depth_texture, ref_ofs, 0.0).r;
 	
+	// Depth
+	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, DEPTH);
+	vec3 ndc_clean =  vec3(SCREEN_UV * 2.0 -1.0, depth_clean);
+	
+	vec4 view =  INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
+	view.xyz /= view.w;
+	float linear_depth = -view.z + VERTEX.z;
+	
+	vec3 refraction_texture;
+	if(linear_depth < 0.00001)
+	{
+		refraction_texture = textureLod(screen_texture, SCREEN_UV, ROUGHNESS * 2.0).rgb;
+		world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc_clean, 1.0);
+	}
+	else{
+		refraction_texture = textureLod(screen_texture, ref_ofs, ROUGHNESS * 2.0).rgb;
+		world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
+	}
+	
 	vec3 screen = textureLod(screen_texture, ref_ofs, 0.0).rgb;
 	
-	vec3 refraction_texture = textureLod(screen_texture, ref_ofs, ROUGHNESS * 2.0).rgb;
+	vec3 depth_color = mix(color_shallow.rgb, color_deep.rgb, depth_blend).rgb;
+	vec3 final_color = mix(depth_color * screen, refraction_texture, water_transparency * depth_blend);
 	
-	
-	ALBEDO = mix(screen * depth_blend, refraction_texture, water_transparency * depth_blend);
+	ALBEDO = final_color;
 	NORMAL_MAP = normalmap;
 	NORMAL *= 0.5;
 	ROUGHNESS = 0.1;

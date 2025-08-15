@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://uwpjsv7dasg2"]
 
-[ext_resource type="Shader" uid="uid://bi7mfe6cs44lh" path="res://Shaders/Water/OceanBest.gdshader" id="1_es0mo"]
+[ext_resource type="Shader" uid="uid://bx7wwy7twge6n" path="res://Shaders/Water/WaterReflection.gdshader" id="1_es0mo"]
 [ext_resource type="PackedScene" uid="uid://c2nt8c5hbggop" path="res://Character/Character.tscn" id="2_oxv5j"]
 [ext_resource type="Texture2D" uid="uid://crierbqf3yb5t" path="res://icon.svg" id="3_es0mo"]
 
@@ -23,15 +23,13 @@ as_normal_map = true
 noise = SubResource("FastNoiseLite_a0vuo")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_l84h3"]
-noise_type = 4
-fractal_type = 3
+noise_type = 3
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mnd0m"]
 noise = SubResource("FastNoiseLite_l84h3")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_n01ha"]
-noise_type = 4
-fractal_type = 3
+noise_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3gyhy"]
 noise = SubResource("FastNoiseLite_n01ha")
@@ -39,30 +37,41 @@ noise = SubResource("FastNoiseLite_n01ha")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oxv5j"]
 render_priority = 0
 shader = ExtResource("1_es0mo")
-shader_parameter/albedo = Color(0, 0.32, 0.43, 1)
-shader_parameter/albedo2 = Color(0, 0.47, 0.76, 1)
-shader_parameter/metallic = 0.17
-shader_parameter/roughness = 0.035
-shader_parameter/wave = SubResource("NoiseTexture2D_mnd0m")
-shader_parameter/wave_bump = SubResource("NoiseTexture2D_3gyhy")
-shader_parameter/texture_normal = SubResource("NoiseTexture2D_hcdmf")
-shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_e5guv")
-shader_parameter/wave_direction = Vector2(0.5, -0.2)
-shader_parameter/wave_direction2 = Vector2(-0.5, 0.5)
-shader_parameter/time_scale = 0.1
-shader_parameter/noise_scale = 20.0
-shader_parameter/height_scale = 2.0
-shader_parameter/refraction_strength = 8.0
-shader_parameter/color_deep = Color(0.11, 0.29, 0.33, 1)
-shader_parameter/color_shallow = Color(0, 0.47, 0.76, 1)
-shader_parameter/beers_law = 2.0
-shader_parameter/depth_offset = 1.5
-shader_parameter/depth_distance = 3.3
-shader_parameter/water_transparency = 1.0
-shader_parameter/edge_scale = 0.3
-shader_parameter/near = 2.88
-shader_parameter/far = 114.94
-shader_parameter/edge_color = Color(3.60981e-07, 0.274837, 0.368638, 1)
+shader_parameter/color_shallow = Color(0.01, 0.2, 0.3, 1)
+shader_parameter/color_deep = Color(0.3, 0.5, 0.6, 1)
+shader_parameter/transparency = 0.37
+shader_parameter/metallic = 0.34
+shader_parameter/roughness = 0.25
+shader_parameter/max_visible_depth = 20.0
+shader_parameter/wave_a = SubResource("NoiseTexture2D_mnd0m")
+shader_parameter/wave_b = SubResource("NoiseTexture2D_3gyhy")
+shader_parameter/wave_move_direction_a = Vector2(-1, 0)
+shader_parameter/wave_move_direction_b = Vector2(0, 1)
+shader_parameter/wave_noise_scale_a = 15.0
+shader_parameter/wave_noise_scale_b = 15.0
+shader_parameter/wave_time_scale_a = 0.15
+shader_parameter/wave_time_scale_b = 0.15
+shader_parameter/wave_height_scale = 1.0
+shader_parameter/wave_normal_flatness = 50.0
+shader_parameter/surface_normals_a = SubResource("NoiseTexture2D_hcdmf")
+shader_parameter/surface_normals_b = SubResource("NoiseTexture2D_e5guv")
+shader_parameter/surface_normals_move_direction_a = Vector2(-1, 0.2)
+shader_parameter/surface_normals_move_direction_b = Vector2(0.2, 1)
+shader_parameter/surface_texture_roughness = 0.53
+shader_parameter/surface_texture_scale = 0.1
+shader_parameter/surface_texture_time_scale = 0.06
+shader_parameter/ssr_resolution = 1.0
+shader_parameter/ssr_max_travel = 30.0
+shader_parameter/ssr_max_diff = 4.0
+shader_parameter/ssr_mix_strength = 0.0
+shader_parameter/ssr_screen_border_fadeout = 0.3
+shader_parameter/refraction_intensity = 0.0
+shader_parameter/border_color = Color(1, 1, 1, 1)
+shader_parameter/border_scale = 0.2
+shader_parameter/border_near = 0.5
+shader_parameter/border_far = 300.0
+shader_parameter/cut_out_x = 0.0
+shader_parameter/cut_out_z = 0.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_b0vno"]
 
@@ -79,12 +88,12 @@ albedo_texture = ExtResource("3_es0mo")
 [node name="WaterLand" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(25.4493, 0, 0, 0, 1.35785, 0, 0, 0, 47.54, -0.615156, 0.977079, 4.52724)
+transform = Transform3D(25.4493, 0, 0, 0, 1.35785, 0, 0, 0, 47.54, -0.603609, 0.76056, 4.54337)
 material_override = SubResource("ShaderMaterial_oxv5j")
 mesh = SubResource("PlaneMesh_b0vno")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.88369, -0.391259, -0.256924, -0.154282, -0.761696, 0.629299, -0.441917, -0.516466, -0.733466, 0, 6.77442, 0)
+transform = Transform3D(0.428873, -0.839779, 0.332927, -0.787895, -0.167437, 0.592609, -0.441917, -0.516466, -0.733466, 0, 6.77442, 0)
 
 [node name="Floor" type="StaticBody3D" parent="."]
 
@@ -93,10 +102,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.183649, 0, 0.801664)
 shape = SubResource("BoxShape3D_oxv5j")
 
 [node name="Player" parent="." instance=ExtResource("2_oxv5j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.413519, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.836135, 0)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.89302, -0.0383755, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.89302, 1.96512, 0)
 mesh = SubResource("CylinderMesh_oxv5j")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
