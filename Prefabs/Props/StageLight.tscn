@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3 uid="uid://c3iu5cu04oxe6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yrpu7"]
+albedo_color = Color(0, 0, 0, 1)
+metallic = 0.21
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_ktsrj"]
+material = SubResource("StandardMaterial3D_yrpu7")
+size = Vector3(1.85, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hyn4c"]
+albedo_color = Color(0.93408, 0.93408, 0.93408, 1)
+metallic = 0.61
+roughness = 0.19
+emission_enabled = true
+emission = Color(0.77084, 0.770839, 0.770839, 1)
+emission_energy_multiplier = 8.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ejrj7"]
+material = SubResource("StandardMaterial3D_hyn4c")
+bottom_radius = 0.285
+height = 0.12
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ynlkv"]
+material = SubResource("StandardMaterial3D_yrpu7")
+radius = 0.035
+height = 1.22
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_42jbc"]
+material = SubResource("StandardMaterial3D_yrpu7")
+top_radius = 0.235
+bottom_radius = 0.07
+height = 0.585
+
+[node name="StageLight" type="Node3D"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.853114, 0.521725, 0, -0.521725, 0.853114, 0, 0, 0, 1, -0.330905, 0.115215, -0.0132579)
+mesh = SubResource("BoxMesh_ktsrj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D2"]
+transform = Transform3D(-3.80289e-08, -0.87, 0, 0.87, -3.80289e-08, 0, 0, 0, 0.87, 0.989597, -0.0186239, 0.0132579)
+mesh = SubResource("CylinderMesh_ejrj7")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20625, 0.990764, 0.562616)
+mesh = SubResource("CapsuleMesh_ynlkv")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.20625, 0.990764, -0.539009)
+mesh = SubResource("CapsuleMesh_ynlkv")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.20625, 1.55478, 0.00287694)
+mesh = SubResource("CapsuleMesh_ynlkv")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.999824, -0.00574069, 0.0178693, 0.00588735, 0.999949, -0.00816555, -0.0178215, 0.00826932, 0.999807, -0.201221, 1.84111, 0)
+mesh = SubResource("CylinderMesh_42jbc")
