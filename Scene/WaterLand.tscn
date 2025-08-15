@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://uwpjsv7dasg2"]
 
 [ext_resource type="Shader" uid="uid://bx7wwy7twge6n" path="res://Shaders/Water/WaterReflection.gdshader" id="1_es0mo"]
-[ext_resource type="PackedScene" uid="uid://c2nt8c5hbggop" path="res://Character/Character.tscn" id="2_oxv5j"]
+[ext_resource type="PackedScene" uid="uid://c2nt8c5hbggop" path="res://Prefabs/Character/Character.tscn" id="2_oxv5j"]
 [ext_resource type="Texture2D" uid="uid://crierbqf3yb5t" path="res://icon.svg" id="3_es0mo"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_es0mo"]
