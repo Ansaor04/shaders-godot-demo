@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://uwpjsv7dasg2"]
+[gd_scene load_steps=22 format=3 uid="uid://uwpjsv7dasg2"]
 
 [ext_resource type="Shader" uid="uid://bx7wwy7twge6n" path="res://Shaders/Water/WaterReflection.gdshader" id="1_es0mo"]
 [ext_resource type="PackedScene" uid="uid://c2nt8c5hbggop" path="res://Character/Character.tscn" id="2_oxv5j"]
-[ext_resource type="Texture2D" uid="uid://crierbqf3yb5t" path="res://icon.svg" id="3_es0mo"]
+[ext_resource type="Shader" uid="uid://fql64x240tyb" path="res://Shaders/sky/SimpleSky.gdshader" id="4_hcdmf"]
+[ext_resource type="Texture2D" uid="uid://6luydftbyvs5" path="res://Shaders/sky/qwantani_moonrise_puresky_4k.exr" id="5_a0vuo"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_es0mo"]
 noise_type = 3
@@ -67,7 +68,7 @@ shader_parameter/ssr_mix_strength = 0.0
 shader_parameter/ssr_screen_border_fadeout = 0.3
 shader_parameter/refraction_intensity = 0.0
 shader_parameter/border_color = Color(1, 1, 1, 1)
-shader_parameter/border_scale = 0.2
+shader_parameter/border_scale = 2.05
 shader_parameter/border_near = 0.5
 shader_parameter/border_far = 300.0
 shader_parameter/cut_out_x = 0.0
@@ -78,12 +79,31 @@ shader_parameter/cut_out_z = 0.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_oxv5j"]
 size = Vector3(55.3277, 1, 61.5286)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_oxv5j"]
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hcdmf"]
-albedo_texture = ExtResource("3_es0mo")
+albedo_color = Color(0.961702, 0.869828, 0.826876, 1)
+metallic = 0.42
+metallic_specular = 0.86
+roughness = 0.0
+refraction_enabled = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_a0vuo"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_es0mo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a0vuo"]
+shader = ExtResource("4_hcdmf")
+shader_parameter/sky_color = Color(0.972558, 0.830219, 0.874338, 1)
+shader_parameter/horizon_color = Color(0.892031, 0.910676, 0.975028, 1)
+shader_parameter/skyTexture = ExtResource("5_a0vuo")
+
+[sub_resource type="Sky" id="Sky_e5guv"]
+sky_material = SubResource("ShaderMaterial_a0vuo")
+
+[sub_resource type="Environment" id="Environment_l84h3"]
+background_mode = 2
+sky = SubResource("Sky_e5guv")
+sky_custom_fov = 47.4
+ambient_light_source = 3
 
 [node name="WaterLand" type="Node3D"]
 
@@ -104,11 +124,14 @@ shape = SubResource("BoxShape3D_oxv5j")
 [node name="Player" parent="." instance=ExtResource("2_oxv5j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.836135, 0)
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.89302, 1.96512, 0)
-mesh = SubResource("CylinderMesh_oxv5j")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(27.9048, 0, 0, 0, 1, 0, 0, 0, 10.6295, 0, 0, 0)
+[node name="floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(35.5136, 0, 0, 0, 1, 0, 0, 0, 68.5688, -0.0657668, -0.0674624, 0.00630951)
 material_override = SubResource("StandardMaterial3D_hcdmf")
 mesh = SubResource("PlaneMesh_a0vuo")
+
+[node name="Landing" type="MeshInstance3D" parent="."]
+transform = Transform3D(11.2478, 0, 0, 0, 2.34957, 0, 0, 0, 5.73564, -19.2879, 1.87324, 2.89073)
+mesh = SubResource("BoxMesh_es0mo")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l84h3")

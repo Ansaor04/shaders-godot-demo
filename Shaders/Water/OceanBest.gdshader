@@ -71,19 +71,19 @@ float waveheight(vec2 offset, int mode) {
 
 void vertex() {
 	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	
+
 	vertex_distance = distance(world_pos,ocean_pPosition);
 	vertex_distance = clamp(vertex_distance, 0.0, 85.0);
 	vertex_distance_clamped = vertex_distance / 85.0;
-	
+
 	float prev_height_x = waveheight(vec2(-0.3,0.0),2);
 	float next_height_x = waveheight(vec2(0.3,0.0),2);
 	float prev_height_y = waveheight(vec2(0.0,-0.3),2);
 	float next_height_y = waveheight(vec2(0.0,0.3),2);
 	float height_mix = waveheight(vec2(0.0,0.0),2);
-	
+
 	VERTEX.y += height_mix * height_scale * (1.0 - vertex_distance_clamped);
-	
+
 	float fraction_x = fract(round(UV.x * 1000.0) / 10.0);
 	float fraction_y = fract(round(UV.y * 1000.0) / 10.0);
 	if (fraction_x != 0.0) {
@@ -104,48 +104,48 @@ void fragment() {
 	float depth_texture = texture(depth_texture2, SCREEN_UV).r * 2.0 - 1.0;
 	float depth = PROJECTION_MATRIX[3][2] / (depth_texture + PROJECTION_MATRIX[2][2]);
 	float depth_blend = exp((depth+VERTEX.z + depth_offset) * -beers_law);
-	depth_blend = clamp(1.0 - depth_blend, 0.0, 1.0);	
+	depth_blend = clamp(1.0 - depth_blend, 0.0, 1.0);
 	float depth_blend_power = clamp(pow(depth_blend, 2.5), 0.0, 1.0);
 
 	// Retrieving depth color and applying the deep and shallow colors
 	vec3 screen_color = textureLod(screen_texture, SCREEN_UV, depth_blend_power * 2.5).rgb;
 	vec3 depth_color = mix(color_shallow.rgb, color_deep.rgb, depth_blend_power);
 	vec3 color = mix(screen_color * depth_color, depth_color * 0.25, depth_blend_power * 0.5);
-	
+
 	// Getting edge depth calc
 	float z_depth = edge(texture(depth_texture2, SCREEN_UV).x);
 	float z_pos = edge(FRAGCOORD.z);
 	float z_dif = z_depth - z_pos;
-	
+
 	// Time calculations for wave (normal map) movement
 	vec2 time = (TIME * wave_direction) * time_scale; // Movement rate of first wave
 	vec2 time2 = (TIME * wave_direction2) * time_scale; // Movement rate of second wave
-	
+
 	// Blend normal maps into one
 	vec3 normal_blend = mix(texture(texture_normal,world_pos.xz / 10.0 + time / 10.0).rgb, texture(texture_normal2,world_pos.xz / 10.0 + time2 / 10.0).rgb, 0.5);
-	
+
 	vec3 ref_normalmap = normal_blend * 2.0;
 	vec3 ref_normal = mix(NORMAL, TANGENT * ref_normalmap + BINORMAL * ref_normalmap + NORMAL * ref_normalmap, 1.0);
 	vec2 ref_ofs = SCREEN_UV - ref_normal.xy * refraction_strength;
-	
+
 	// Blend Wave1 and Wave2 maps
 	vec3 wave_normal_blend = mix(texture(wave_bump, world_pos.xz / noise_scale + time).xyz,texture(wave_bump, world_pos.xz / noise_scale + time2).xyz,0.3);
-	
+
 	// Calculate Fresnel
 	float fresnel = fresnel(5.0, NORMAL, VIEW);
 	vec3 surface_color = mix(albedo, albedo2, fresnel); // Interpolate albedo values by frensel
-	
+
 	float depth_clean = textureLod(depth_texture2,SCREEN_UV, 0.0).r;
 	float depth2 = textureLod(depth_texture2, ref_ofs, 0.0).r;
 	vec3 screen2 = textureLod(screen_texture, ref_ofs, 0.0).rgb;
 // Depth
 	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, DEPTH);
 	vec3 ndc_clean =  vec3(SCREEN_UV * 2.0 -1.0, depth_clean);
-	
+
 	vec4 view =  INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	view.xyz /= view.w;
 	float linear_depth = -view.z + VERTEX.z;
-	
+
 	vec4 world;
 	vec3 refraction_texture;
 	if(linear_depth < 0.00001)
@@ -157,7 +157,7 @@ void fragment() {
 		refraction_texture = textureLod(screen_texture, ref_ofs, ROUGHNESS * 2.0).rgb;
 		world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	}
-	
+
 	// Add Edge Color to Surface Color Albedo
 	vec3 depth_color2 = mix(edge_color, color, depth_blend).rgb;
 	vec3 depth_color_adj = mix(edge_color, color, step(edge_scale, z_dif));
