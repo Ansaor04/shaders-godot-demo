@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://t6pasqukvt0v"
-path="res://.godot/imported/AnimationLibrary_Godot_Standard.glb-d398207d0bd3e1ce80e2151ad8557fc5.scn"
+uid="uid://cmiyjxukfka3o"
+path="res://.godot/imported/amonke.glb-c40aa066f704ffabfc796ed1b24396bb.scn"
 
 [deps]
 
-source_file="res://Character/AnimationLibrary_Godot_Standard.glb"
-dest_files=["res://.godot/imported/AnimationLibrary_Godot_Standard.glb-d398207d0bd3e1ce80e2151ad8557fc5.scn"]
+source_file="res://Models/Monke/amonke.glb"
+dest_files=["res://.godot/imported/amonke.glb-c40aa066f704ffabfc796ed1b24396bb.scn"]
 
 [params]
 
