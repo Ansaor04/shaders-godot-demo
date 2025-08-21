@@ -1,7 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bs7j14b3y15pr"]
+[gd_scene load_steps=12 format=3 uid="uid://bs7j14b3y15pr"]
 
-[ext_resource type="Texture2D" uid="uid://bm8djub5otix2" path="res://Textures/grids/Purple/texture_02.png" id="1_2fs3n"]
 [ext_resource type="Script" uid="uid://5cbh5ia486bn" path="res://Scripts/TpDoor.cs" id="1_ilfa6"]
+[ext_resource type="Shader" uid="uid://ci2p2uehpiylp" path="res://Shaders/Warp/Warp.gdshader" id="2_joh73"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ilfa6"]
 size = Vector3(1.5, 0.1, 0.505)
@@ -15,12 +15,27 @@ size = Vector3(2.4, 0.1, 0.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_62wvj"]
 size = Vector3(2.4, 0.1, 0.5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c0hk3"]
-albedo_texture = ExtResource("1_2fs3n")
-uv1_triplanar = true
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_joh73"]
+frequency = 0.0072
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mnnmk"]
+noise = SubResource("FastNoiseLite_joh73")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mnnmk"]
+render_priority = 0
+shader = ExtResource("2_joh73")
+shader_parameter/override_color = Color(1, 0.503083, 0.918655, 1)
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_mnnmk")
+shader_parameter/resolution = Vector2(1400, 2500)
+shader_parameter/speed = 1.0
+shader_parameter/octaves = 5
+shader_parameter/frecuency_modifier = 1.8
+shader_parameter/amplitude_modifier = 1.6
+shader_parameter/time_shift = 0.7
+shader_parameter/zoom = 5.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_3h65r"]
-material = SubResource("StandardMaterial3D_c0hk3")
+material = SubResource("ShaderMaterial_mnnmk")
 size = Vector2(1.4, 2.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ilfa6"]
@@ -30,6 +45,7 @@ size = Vector3(1.07269, 2.20404, 0.186924)
 script = ExtResource("1_ilfa6")
 
 [node name="DoorFrame" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 2.70883, 0, 0, 0)
 
 [node name="Side1" type="StaticBody3D" parent="DoorFrame"]
 
@@ -77,11 +93,11 @@ shape = SubResource("BoxShape3D_62wvj")
 [node name="Screen" type="Node3D" parent="."]
 
 [node name="WarpMesh" type="MeshInstance3D" parent="Screen"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.21293, 0.188798)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.21293, 0.149921)
 mesh = SubResource("PlaneMesh_3h65r")
 
 [node name="WarpMesh2" type="MeshInstance3D" parent="Screen"]
-transform = Transform3D(-1, 8.74228e-08, -3.82137e-15, 0, -4.37114e-08, -1, -8.74228e-08, -1, 4.37114e-08, 0, 1.21293, -0.226756)
+transform = Transform3D(-1, 8.74228e-08, -3.82137e-15, 0, -4.37114e-08, -1, -8.74228e-08, -1, 4.37114e-08, 0, 1.21293, -0.0883195)
 mesh = SubResource("PlaneMesh_3h65r")
 
 [node name="Area3D" type="Area3D" parent="Screen"]

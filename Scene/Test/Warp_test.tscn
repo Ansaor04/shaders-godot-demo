@@ -1,0 +1,61 @@
+[gd_scene load_steps=11 format=3 uid="uid://d1jrqq281lnf5"]
+
+[ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://Textures/grids/Dark/texture_05.png" id="1_17v6i"]
+[ext_resource type="PackedScene" uid="uid://bnumi2aawvst4" path="res://Prefabs/Interactable/PlayerStart.tscn" id="2_6rxk5"]
+[ext_resource type="Shader" uid="uid://ci2p2uehpiylp" path="res://Shaders/Warp/Warp.gdshader" id="3_5j5mm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o3jxj"]
+size = Vector3(30, 1, 30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_snpff"]
+albedo_texture = ExtResource("1_17v6i")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_0f027"]
+size = Vector3(30, 1, 30)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_17v6i"]
+noise_type = 0
+frequency = 0.0064
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6rxk5"]
+noise = SubResource("FastNoiseLite_17v6i")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_17v6i"]
+render_priority = 1
+shader = ExtResource("3_5j5mm")
+shader_parameter/override_color = Color(0.536703, 0.491725, 0.684283, 1)
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_6rxk5")
+shader_parameter/resolution = Vector2(600, 400)
+shader_parameter/speed = 1.0
+shader_parameter/octaves = 5
+shader_parameter/frecuency_modifier = 1.8
+shader_parameter/amplitude_modifier = 1.6
+shader_parameter/time_shift = 0.7
+shader_parameter/zoom = 5.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_6rxk5"]
+material = SubResource("ShaderMaterial_17v6i")
+
+[node name="Root" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_o3jxj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+material_override = SubResource("StandardMaterial3D_snpff")
+mesh = SubResource("BoxMesh_0f027")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.392401, 0.919794, 0, -0.919794, 0.392401, 0, 3.27446, 0)
+
+[node name="PlayerStart" parent="." instance=ExtResource("2_6rxk5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.783161, -0.46984, -0.458721)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96933, 0.527108, -2.90266)
+mesh = SubResource("BoxMesh_6rxk5")
