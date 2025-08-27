@@ -1,3 +1,46 @@
-[gd_scene format=3 uid="uid://den32ps8led3c"]
+[gd_scene load_steps=7 format=3 uid="uid://den32ps8led3c"]
+
+[ext_resource type="PackedScene" uid="uid://bnumi2aawvst4" path="res://Prefabs/Interactable/PlayerStart.tscn" id="1_gyfs4"]
+[ext_resource type="PackedScene" uid="uid://bs7j14b3y15pr" path="res://Prefabs/Interactable/TPDoor/TPDoor.tscn" id="2_d5x1h"]
+[ext_resource type="PackedScene" uid="uid://cub55ag7ao31u" path="res://Scene/Toon.tscn" id="3_8mm7a"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hq1ik"]
+top_radius = 4.0
+bottom_radius = 4.0
+height = 0.22
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nfk4m"]
+height = 0.25
+radius = 4.0
+
+[sub_resource type="Environment" id="Environment_66tet"]
+background_mode = 1
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 1.05
+glow_strength = 1.06
+glow_bloom = 0.13
+glow_blend_mode = 1
 
 [node name="Root" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("CylinderMesh_hq1ik")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("CylinderShape3D_nfk4m")
+
+[node name="PlayerStart" parent="." instance=ExtResource("1_gyfs4")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.455146, 0.125, -2.891)
+
+[node name="Door" parent="." instance=ExtResource("2_d5x1h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0335344, 0.0523948, 2.57041)
+targetScene = ExtResource("3_8mm7a")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_66tet")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.786288, 0.25686, -0.561937, 0.61786, -0.32688, 0.715122, 0, -0.90949, -0.415725, 0, 1.94448, 0)

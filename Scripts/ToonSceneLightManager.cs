@@ -3,7 +3,7 @@ using System;
 
 public partial class ToonSceneLightManager : Node3D
 {
-	private bool lights = false;
+	private bool lights = true;
 
 	private DirectionalLight3D ambientLight;
 	private SpotLight3D standLight1;

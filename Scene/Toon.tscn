@@ -1,4 +1,4 @@
-[gd_scene load_steps=84 format=4 uid="uid://cub55ag7ao31u"]
+[gd_scene load_steps=87 format=4 uid="uid://cub55ag7ao31u"]
 
 [ext_resource type="Script" uid="uid://brs8fq1g37rce" path="res://Scripts/ToonSceneLightManager.cs" id="1_1qxd1"]
 [ext_resource type="Texture2D" uid="uid://bdw2j5kejiegc" path="res://Textures/grids/Dark/texture_01.png" id="1_dq0j0"]
@@ -8,6 +8,8 @@
 [ext_resource type="Shader" uid="uid://b30aikjenqpn0" path="res://Shaders/Toon/Toon.gdshader" id="4_n8tga"]
 [ext_resource type="PackedScene" uid="uid://c3iu5cu04oxe6" path="res://Prefabs/Props/StageLight.tscn" id="5_3srvb"]
 [ext_resource type="PackedScene" uid="uid://8e0sqcsea3jq" path="res://Prefabs/Interactable/Button/Button.tscn" id="8_fw4ll"]
+[ext_resource type="PackedScene" uid="uid://bs7j14b3y15pr" path="res://Prefabs/Interactable/TPDoor/TPDoor.tscn" id="9_mfmi3"]
+[ext_resource type="PackedScene" uid="uid://uwpjsv7dasg2" path="res://Scene/WaterLand.tscn" id="10_dspbj"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0q6e6"]
 
@@ -17665,6 +17667,11 @@ size = Vector3(0.1, 2, 14)
 [sub_resource type="BoxShape3D" id="BoxShape3D_fw4ll"]
 size = Vector3(0.1, 3.18372, 13.9457)
 
+[sub_resource type="Environment" id="Environment_1qxd1"]
+background_mode = 2
+glow_enabled = true
+glow_blend_mode = 1
+
 [node name="Root" type="Node3D"]
 script = ExtResource("1_1qxd1")
 
@@ -18583,7 +18590,7 @@ transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 3.95055, 3.14658, -5
 transform = Transform3D(-1.5299e-08, 0, 0.35, 0, 0.35, 0, -0.35, 0, -1.5299e-08, 0.0694709, 3.14658, -8.72022)
 
 [node name="PlayerStart" parent="." instance=ExtResource("3_n8tga")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0316119, -9.68575e-08, -0.176311)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0316119, -9.68575e-08, 1.69596)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.99965, 0.02057, 0.0166474, -0.0263956, 0.819762, 0.572096, -0.00187892, -0.572335, 0.820018, 1.37222, 2.09841, -4.47965)
@@ -18617,3 +18624,10 @@ omni_range = 2.12602
 
 [node name="Button" parent="." instance=ExtResource("8_fw4ll")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.0248253, 0.150555, -1.76618)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1qxd1")
+
+[node name="Door" parent="." instance=ExtResource("9_mfmi3")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -8.24543, -0.00141299, 6.45401)
+targetScene = ExtResource("10_dspbj")
