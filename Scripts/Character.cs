@@ -69,15 +69,15 @@ public partial class Character : CharacterBody3D
 
 		if (@event.IsActionPressed("ui_cancel"))
 		{
-			ToggleMouseCapture();
+			Input.MouseMode = Input.MouseModeEnum.Visible;
 		}
-	}
-
-	private void ToggleMouseCapture()
-	{
-		Input.MouseMode = Input.MouseMode == Input.MouseModeEnum.Captured
-			? Input.MouseModeEnum.Visible
-			: Input.MouseModeEnum.Captured;
+		if (@event is InputEventMouseButton mouseEvent &&
+		mouseEvent.Pressed &&
+		mouseEvent.ButtonIndex == MouseButton.Left &&
+		Input.MouseMode == Input.MouseModeEnum.Visible)
+        {
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+        }
 	}
 
 	private void HandleMouseInput(InputEventMouseMotion mouseMotion)
